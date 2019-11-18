@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Visualização da Execução</title>
+	<style>
+		body {
+			margin: 0;
+		}
+
+		canvas {
+			width: 100%;
+			height: 100%
+		}
+
+		.ui {
+			position: absolute;
+		}
+
+		button {
+			margin: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<script src="js/three.js"></script>
+	<script src="js/OrbitControls.js"></script>
+	<script src="ThreeJS.js"></script>
+
+	<button type="button" onclick="onButtonClickLP(event)" style="left: 0px; top: 0px;" class="ui">Criar Linha
+		de Produção</button>
+	<button type="button" onclick="onButtonClickM(event)" style="left:200px; top: 0px;" class="ui">Criar
+		Máquina</button>
+	<button type="button" onclick="onButtonClickIMP(event)" style="left:335px; top: 0px;" class="ui">Importar</button>
+	<button type="button" onclick="onButtonClickApagarLP(event)" style="left:450px; top: 0px;" class="ui">Eliminar Linha
+		Produção</button>
+	<button type="button" onclick="onButtonClickApagarM(event)" style="left:650px; top: 0px;" class="ui">Eliminar
+		Máquina</button>
+	<button type="button" onclick="onButtonClickLuminosidade(event)" style="left:815px; top: 0px;"
+		class="ui">Luminosidade</button>
+</body>
+
+</html>
