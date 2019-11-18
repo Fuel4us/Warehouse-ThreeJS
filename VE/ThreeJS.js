@@ -68,8 +68,8 @@ document.body.appendChild(renderer.domElement);
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 //axis for help
-var axisHelper = new THREE.AxesHelper(50);
-scene.add(axisHelper);
+// var axisHelper = new THREE.AxesHelper(50);
+// scene.add(axisHelper);
 
 var COMPRIMENTO_FABRICA = 80;
 var LARGURA_FABRICA = 40;
@@ -113,7 +113,7 @@ var walls = function (size_c, size_l, x, y, z, rotx, rotz, color_w) {
 
 
     loader.load('https://st2.depositphotos.com/5625700/10333/i/950/depositphotos_103334684-stock-photo-white-wall-granulated-texture-grunge.jpg', (texture) => {
-        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+        const material = new THREE.MeshLambertMaterial({ map: texture, side: THREE.DoubleSide });
         const cube = new THREE.Mesh(plane_geometry, material);
         scene.add(cube);
     });
@@ -132,7 +132,7 @@ var desenharBalcoes = function () {
 
 var desenhaBalcao = function (comprimento, largura, altura, x, y, z, rotX) {
     var geometry_balcao = new THREE.BoxGeometry(comprimento, largura, altura);
-    var material = new THREE.MeshBasicMaterial({ color: 0x993300 });
+    var material = new THREE.MeshLambertMaterial({ color: 0x993300 });
     geometry_balcao.rotateY(Math.PI / 2);
     geometry_balcao.translate(x, y, z);
     var linha = new THREE.Mesh(geometry_balcao, material);
@@ -160,7 +160,7 @@ var desenhaLinha = function () {
 
 var desenhaLinhaF = function (comprimento, largura, altura, posicaoLinhaZ, posicaoLinhaX) {
     var geometry_linha = new THREE.BoxGeometry(comprimento, largura, altura);
-    var material = new THREE.MeshBasicMaterial({ color: 0x999966 });
+    var material = new THREE.MeshLambertMaterial({ color: '#179ce7' });
     geometry_linha.rotateX(Math.PI / 2);
     var descZ = -20 + (8 + (posicaoLinhaZ * largura) + largura / 2);
     geometry_linha.translate(posicaoLinhaX, -17, descZ);
@@ -218,20 +218,77 @@ var desenhaMaquinas = function () {
 }
 
 /* LUZ e todas as funções necessárias */
-let luzAmbiente = new THREE.AmbientLight(0xffffff, 5.0); // A luz
+
+
+// pointLight main storage
+let pointLight = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
+pointLight.position.set(0,20,0);
+let pointLight1 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 2
+pointLight1.position.set(0,20,10);
+let pointLight2 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 3
+pointLight2.position.set(0,20,20);
+let pointLight3 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 4
+pointLight3.position.set(0,20,30);
+let pointLight4 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 5
+pointLight4.position.set(0,20,40);
+let pointLight5 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 6
+pointLight5.position.set(0,20,50);
+let pointLight6 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 7
+pointLight6.position.set(0,20,-10);
+
+let sphereSize = 3.5;
+let pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+let pointLightHelper1 = new THREE.PointLightHelper(pointLight1, sphereSize);
+let pointLightHelper2 = new THREE.PointLightHelper(pointLight2, sphereSize);
+let pointLightHelper3 = new THREE.PointLightHelper(pointLight3, sphereSize);
+let pointLightHelper4 = new THREE.PointLightHelper(pointLight4, sphereSize);
+let pointLightHelper5 = new THREE.PointLightHelper(pointLight5, sphereSize);
+let pointLightHelper6 = new THREE.PointLightHelper(pointLight6, sphereSize);
+
+// pointLight secondary storages
+let sphereSizeSecondary = 3;
+
+let pointLightSecondary = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
+pointLightSecondary.position.set(-30,0,40);
+
+let pointLightSecondary1 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
+pointLightSecondary1.position.set(30,0,40);
+
+let pointLightSecondaryHelper = new THREE.PointLightHelper(pointLightSecondary, sphereSizeSecondary);
+let pointLightSecondaryHelper1 = new THREE.PointLightHelper(pointLightSecondary1, sphereSizeSecondary);
+
 let luzAcesa = {value: 1} // se luzAcesa for par está acesa se for impar não está
 
 let acenderLuz = () => {
-  scene.add(luzAmbiente);
+  scene.add(pointLightHelper, pointLight);
+  scene.add(pointLightHelper1, pointLight1);
+  scene.add(pointLightHelper2, pointLight2);
+  scene.add(pointLightHelper3, pointLight3);
+  scene.add(pointLightHelper4, pointLight4);
+  scene.add(pointLightHelper5, pointLight5);
+  scene.add(pointLightHelper6, pointLight6);
+
+  scene.add(pointLightSecondaryHelper, pointLightSecondary);
+  scene.add(pointLightSecondaryHelper1, pointLightSecondary1);
+
   luzAcesa.value++;
 }
 
 let apagarLuz = () => {
-  scene.remove(luzAmbiente);
+  scene.remove(pointLightHelper, pointLight);
+  scene.remove(pointLightHelper1, pointLight1);
+  scene.remove(pointLightHelper2, pointLight2);
+  scene.remove(pointLightHelper3, pointLight3);
+  scene.remove(pointLightHelper4, pointLight4);
+  scene.remove(pointLightHelper5, pointLight5);
+  scene.remove(pointLightHelper6, pointLight6);
+
+  scene.remove(pointLightSecondaryHelper, pointLightSecondary);
+  scene.remove(pointLightSecondaryHelper1, pointLightSecondary1);
+
   luzAcesa.value++;
 }
 /* FIM DA LUZ */
-
 //Apagar uma maquina - widget
 var apagarMaquina = function () {
     var mqn = maquinasTemp.pop();
