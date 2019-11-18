@@ -65,6 +65,14 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+window.addEventListener('resize', function() {
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  renderer.setSize(width,height);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+});
+
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 //axis for help
