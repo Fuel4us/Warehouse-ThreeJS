@@ -244,6 +244,7 @@ pointLight5.position.set(0,20,50);
 let pointLight6 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 7
 pointLight6.position.set(0,20,-10);
 
+// this will help vizualize where the light is coming
 let sphereSize = 3.5;
 let pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
 let pointLightHelper1 = new THREE.PointLightHelper(pointLight1, sphereSize);
@@ -297,6 +298,7 @@ let apagarLuz = () => {
   luzAcesa.value++;
 }
 /* FIM DA LUZ */
+
 //Apagar uma maquina - widget
 var apagarMaquina = function () {
     var mqn = maquinasTemp.pop();
