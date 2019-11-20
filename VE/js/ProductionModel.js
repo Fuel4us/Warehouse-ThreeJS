@@ -232,14 +232,7 @@ var desenhaMaquinas = function () {
 let lampLoader = new THREE.GLTFLoader(); // Loader for Lamps
 
 let lampSource = 'models/factoryLights/scene.gltf'; // resource url
-let onLoad = (gltf, position) => {
-  const model = gltf.scene.children[ 0 ];
-  model.position.copy( position );
-  model.scale.set(0.2,0.15,0.2);
-  model.rotation.x = Math.PI / 2;
-  model.rotation.z = Math.PI / 2;
-  scene.add(model);
-}; // called to load resource
+let onLoad = (gltf, position) => {  const model = gltf.scene.children[ 0 ];  model.position.copy( position );  model.scale.set(0.2,0.15,0.2);  model.rotation.x = Math.PI / 2;  model.rotation.z = Math.PI / 2;  scene.add(model);}; // called to load resource
 let loadingBuffer = (timer) => { console.log((timer.loaded / timer.total * 100) + '% loaded') } // called while loading
 let loaderError = (error) => { console.log('Error happened') } // When error is found
 
@@ -265,13 +258,7 @@ lampLoader.load(lampSource, gltf => onLoad(gltf, lamp7Position), loadingBuffer, 
 
 /* Storage Room */
 
-let onLoadSecondaryLamps = (gltf, position) => {
-  const model = gltf.scene.children[ 0 ];
-  model.position.copy( position );
-  model.scale.set(0.2,0.15,0.2);
-  model.rotation.x = Math.PI / 2;
-  scene.add(model);
-};
+let onLoadSecondaryLamps = (gltf, position) => {  const model = gltf.scene.children[ 0 ];  model.position.copy( position );  model.scale.set(0.2,0.15,0.2);  model.rotation.x = Math.PI / 2;  scene.add(model);};
 
 // Storage room lamp positions
 let lamp8Position = new THREE.Vector3(-30,-1,40);
@@ -282,7 +269,6 @@ lampLoader.load(lampSource, gltf => onLoadSecondaryLamps(gltf, lamp8Position), l
 lampLoader.load(lampSource, gltf => onLoadSecondaryLamps(gltf, lamp9Position), loadingBuffer, loaderError);
 
 /* LUZ e todas as funções necessárias */
-
 
 // pointLight main storage
 let pointLight = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
@@ -299,16 +285,6 @@ let pointLight5 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 6
 pointLight5.position.set(0,20,50);
 let pointLight6 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 7
 pointLight6.position.set(0,20,-10);
-
-// this will help vizualize where the light is coming
-let sphereSize = 3.5;
-let pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-let pointLightHelper1 = new THREE.PointLightHelper(pointLight1, sphereSize);
-let pointLightHelper2 = new THREE.PointLightHelper(pointLight2, sphereSize);
-let pointLightHelper3 = new THREE.PointLightHelper(pointLight3, sphereSize);
-let pointLightHelper4 = new THREE.PointLightHelper(pointLight4, sphereSize);
-let pointLightHelper5 = new THREE.PointLightHelper(pointLight5, sphereSize);
-let pointLightHelper6 = new THREE.PointLightHelper(pointLight6, sphereSize);
 
 // pointLight secondary storages
 let pointLightSecondary = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
