@@ -75,6 +75,18 @@ window.addEventListener('resize', function() {
 
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
+var set_camera_init = function () {
+    camera.position.z = 100;
+    camera.position.y = 20;
+}
+
+var animate = function () {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+};
+
+/* MAIN WALLS AND DRAW */
+
 // axis for help
 // var axisHelper = new THREE.AxesHelper(50);
 // scene.add(axisHelper);
@@ -148,108 +160,7 @@ var desenhaBalcao = function (comprimento, largura, altura, x, y, z, rotX) {
     scene.add(linha);
 }
 
-//Desenhar um tapete/linha - widget
-
-var contTapetes = 0;
-var contTapetesTotal = 8;
-
-var COMPRIMENTO_TAPETE = 30;
-var LARGURA_TAPETE = 3.785;
-
-var desenhaLinha = function () {
-    if (contTapetes % 2 == 0) { //nr linhas par
-        desenhaLinhaF(COMPRIMENTO_TAPETE, LARGURA_TAPETE, 1, 2 * contTapetes, 0); //linha grande
-        desenhaLinhaF(LARGURA_TAPETE, LARGURA_TAPETE, 1, 2 * contTapetes + 1, 15 - LARGURA_TAPETE / 2);//Linha pequena direita
-    } else { //nr linhas impar
-        desenhaLinhaF(COMPRIMENTO_TAPETE, LARGURA_TAPETE, 1, 2 * contTapetes, 0); //linha grande
-        desenhaLinhaF(LARGURA_TAPETE, LARGURA_TAPETE, 1, 2 * contTapetes + 1, - 15 + LARGURA_TAPETE / 2);//Linha pequena esquerda
-    }
-    contTapetes++;
-}
-
-var desenhaLinhaF = function (comprimento, largura, altura, posicaoLinhaZ, posicaoLinhaX) {
-    var geometry_linha = new THREE.BoxGeometry(comprimento, largura, altura);
-    var material = new THREE.MeshLambertMaterial({ color: '#179ce7' });
-    geometry_linha.rotateX(Math.PI / 2);
-    var descZ = -20 + (8 + (posicaoLinhaZ * largura) + largura / 2);
-    geometry_linha.translate(posicaoLinhaX, -17, descZ);
-    var linha = new THREE.Mesh(geometry_linha, material);
-    scene.add(linha);
-    linhaTemp.push(linha);
-}
-
-//Apagar um tapete/linha - widget
-var apagarLinha = function () {
-    var linhaG = linhaTemp.pop();
-    scene.remove(linhaG);
-    var linhaP = linhaTemp.pop();
-    scene.remove(linhaP);
-    contTapetes--;
-}
-
-
-//Desenhar maquina - widget
-var contTapetesPreenchidos = 0;
-var contMaquinas = 0;
-var contMaquinasTotal = 0;
-
-var TAMANHO_MAQUINA = 3;
-var SIDEWALLK = 5;
-var MACHINE_SPACE = 5.25;
-
-var desenhaMaquina = function (size_m, x, y, z) {
-    var geometry_balcao = new THREE.BoxGeometry(size_m, size_m, size_m);
-    var material = new THREE.MeshLambertMaterial({ color: '#e70861' });
-    geometry_balcao.translate(x, y, z);
-    var maquina = new THREE.Mesh(geometry_balcao, material);
-    scene.add(maquina);
-    maquinasTemp.push(maquina);
-}
-
-var desenhaMaquinas = function () {
-    switch (contMaquinas) {
-        case 0:
-            desenhaMaquina(TAMANHO_MAQUINA, - LARGURA_FABRICA / 2 + (SIDEWALLK + MACHINE_SPACE + (contMaquinas * (TAMANHO_MAQUINA + MACHINE_SPACE))), -17, - LARGURA_FABRICA / 2 + (8 + (2 * contTapetesPreenchidos * LARGURA_TAPETE) - TAMANHO_MAQUINA / 2)); //primeiras maquinas
-            contMaquinas++;
-            contMaquinasTotal++;
-            break;
-        case 1:
-            desenhaMaquina(TAMANHO_MAQUINA, - LARGURA_FABRICA / 2 + (SIDEWALLK + MACHINE_SPACE + (contMaquinas * (TAMANHO_MAQUINA + MACHINE_SPACE))), -17, - LARGURA_FABRICA / 2 + (8 + (2 * contTapetesPreenchidos * LARGURA_TAPETE) - TAMANHO_MAQUINA / 2)); //segundas maquinas
-            contMaquinas++;
-            contMaquinasTotal++;
-            break;
-        default:
-            desenhaMaquina(TAMANHO_MAQUINA, - LARGURA_FABRICA / 2 + (SIDEWALLK + MACHINE_SPACE + (contMaquinas * (TAMANHO_MAQUINA + MACHINE_SPACE))), -17, - LARGURA_FABRICA / 2 + (8 + (2 * contTapetesPreenchidos * LARGURA_TAPETE) - TAMANHO_MAQUINA / 2));// terceiras maquinas
-            contTapetesPreenchidos++;
-            contMaquinas = 0;
-            contMaquinasTotal++;
-    }
-}
-
-//Apagar uma maquina - widget
-var apagarMaquina = function () {
-    var mqn = maquinasTemp.pop();
-    scene.remove(mqn);
-    contMaquinasTotal--;
-    if(contMaquinas == 0){
-        contMaquinas = 2;
-        contTapetesPreenchidos--;
-    }else{
-        contMaquinas--;
-    }
-}
-
-
-
-var set_camera_init = function () {
-    camera.position.z = 100;
-    camera.position.y = 20;
-}
-
-var animate = function () {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-};
+/* END OF MAIN WALLS */
 
 var main = function () {
     draw();

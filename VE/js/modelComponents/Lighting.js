@@ -2,7 +2,7 @@
 
 let lampLoader = new THREE.GLTFLoader(); // Loader for Lamps
 
-let lampSource = 'models/factoryLights/scene.gltf'; // resource url
+let lampSource = 'importedModels/factoryLights/scene.gltf'; // resource url
 let onLoad = (gltf, position) => {  const model = gltf.scene.children[ 0 ];  model.position.copy( position );  model.scale.set(0.2,0.15,0.2);  model.rotation.x = Math.PI / 2;  model.rotation.z = Math.PI / 2;  scene.add(model);}; // called to load resource
 let loadingBuffer = (timer) => { console.log((timer.loaded / timer.total * 100) + '% loaded') } // called while loading
 let loaderError = (error) => { console.log('Error happened') } // When error is found
