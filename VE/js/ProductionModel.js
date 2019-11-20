@@ -59,6 +59,7 @@ function onButtonClickLuminosidade(event) {
 var scene;
 
 scene = new THREE.Scene();
+scene.background = new THREE.Color( '#cdd1d0' );
 var camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
 
 var renderer = new THREE.WebGLRenderer();
@@ -109,8 +110,9 @@ var draw = function () {
 
     //balcao
     desenharBalcoes();
-}
+};
 const loader = new THREE.TextureLoader();
+loader.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 //funções de draw
 var walls = function (size_c, size_l, x, y, z, rotx, rotz, color_w) {
@@ -225,6 +227,60 @@ var desenhaMaquinas = function () {
     }
 }
 
+// Models and loaders
+
+let lampLoader = new THREE.GLTFLoader(); // Loader for Lamps
+
+let lampSource = 'models/factoryLights/scene.gltf'; // resource url
+let onLoad = (gltf, position) => {
+  const model = gltf.scene.children[ 0 ];
+  model.position.copy( position );
+  model.scale.set(0.2,0.15,0.2);
+  model.rotation.x = Math.PI / 2;
+  model.rotation.z = Math.PI / 2;
+  scene.add(model);
+}; // called to load resource
+let loadingBuffer = (timer) => { console.log((timer.loaded / timer.total * 100) + '% loaded') } // called while loading
+let loaderError = (error) => { console.log('Error happened') } // When error is found
+
+/* MAIN ROOM */
+
+// Main room lamp positions
+let lamp1Position = new THREE.Vector3(0,19,10);
+let lamp2Position = new THREE.Vector3(0,19,20);
+let lamp3Position = new THREE.Vector3(0,19,30);
+let lamp4Position = new THREE.Vector3(0,19,40);
+let lamp5Position = new THREE.Vector3(0,19,50);
+let lamp6Position = new THREE.Vector3(0,19,-10);
+let lamp7Position = new THREE.Vector3(0,19,0);
+
+// Main room lamps
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp1Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp2Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp3Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp4Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp5Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp6Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoad(gltf, lamp7Position), loadingBuffer, loaderError);
+
+/* Storage Room */
+
+let onLoadSecondaryLamps = (gltf, position) => {
+  const model = gltf.scene.children[ 0 ];
+  model.position.copy( position );
+  model.scale.set(0.2,0.15,0.2);
+  model.rotation.x = Math.PI / 2;
+  scene.add(model);
+};
+
+// Storage room lamp positions
+let lamp8Position = new THREE.Vector3(-30,-1,40);
+let lamp9Position = new THREE.Vector3(30,-1,40);
+
+// Storage room lamps
+lampLoader.load(lampSource, gltf => onLoadSecondaryLamps(gltf, lamp8Position), loadingBuffer, loaderError);
+lampLoader.load(lampSource, gltf => onLoadSecondaryLamps(gltf, lamp9Position), loadingBuffer, loaderError);
+
 /* LUZ e todas as funções necessárias */
 
 
@@ -255,45 +311,40 @@ let pointLightHelper5 = new THREE.PointLightHelper(pointLight5, sphereSize);
 let pointLightHelper6 = new THREE.PointLightHelper(pointLight6, sphereSize);
 
 // pointLight secondary storages
-let sphereSizeSecondary = 3;
-
 let pointLightSecondary = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
 pointLightSecondary.position.set(-30,0,40);
 
 let pointLightSecondary1 = new THREE.PointLight(0xffffff, 1, 50); // Candeeiro 1
 pointLightSecondary1.position.set(30,0,40);
 
-let pointLightSecondaryHelper = new THREE.PointLightHelper(pointLightSecondary, sphereSizeSecondary);
-let pointLightSecondaryHelper1 = new THREE.PointLightHelper(pointLightSecondary1, sphereSizeSecondary);
-
 let luzAcesa = {value: 1} // se luzAcesa for par está acesa se for impar não está
 
 let acenderLuz = () => {
-  scene.add(pointLightHelper, pointLight);
-  scene.add(pointLightHelper1, pointLight1);
-  scene.add(pointLightHelper2, pointLight2);
-  scene.add(pointLightHelper3, pointLight3);
-  scene.add(pointLightHelper4, pointLight4);
-  scene.add(pointLightHelper5, pointLight5);
-  scene.add(pointLightHelper6, pointLight6);
+  scene.add(pointLight);
+  scene.add(pointLight1);
+  scene.add(pointLight2);
+  scene.add(pointLight3);
+  scene.add(pointLight4);
+  scene.add(pointLight5);
+  scene.add(pointLight6);
 
-  scene.add(pointLightSecondaryHelper, pointLightSecondary);
-  scene.add(pointLightSecondaryHelper1, pointLightSecondary1);
+  scene.add(pointLightSecondary);
+  scene.add(pointLightSecondary1);
 
   luzAcesa.value++;
 }
 
 let apagarLuz = () => {
-  scene.remove(pointLightHelper, pointLight);
-  scene.remove(pointLightHelper1, pointLight1);
-  scene.remove(pointLightHelper2, pointLight2);
-  scene.remove(pointLightHelper3, pointLight3);
-  scene.remove(pointLightHelper4, pointLight4);
-  scene.remove(pointLightHelper5, pointLight5);
-  scene.remove(pointLightHelper6, pointLight6);
+  scene.remove(pointLight);
+  scene.remove(pointLight1);
+  scene.remove(pointLight2);
+  scene.remove(pointLight3);
+  scene.remove(pointLight4);
+  scene.remove(pointLight5);
+  scene.remove(pointLight6);
 
-  scene.remove(pointLightSecondaryHelper, pointLightSecondary);
-  scene.remove(pointLightSecondaryHelper1, pointLightSecondary1);
+  scene.remove(pointLightSecondary);
+  scene.remove(pointLightSecondary1);
 
   luzAcesa.value++;
 }
